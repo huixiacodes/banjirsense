@@ -68,7 +68,7 @@ export default function Impact() {
       <footer className="footer">
         <span>Built by {AUTHOR}</span>
         <span>
-          BanjirSense prototype · water levels are simulated · official flood info:{' '}
+          BanjirSense prototype · live river data from JPS · official flood info:{' '}
           <a href="https://publicinfobanjir.water.gov.my" target="_blank" rel="noopener">
             publicinfobanjir.water.gov.my
           </a>
