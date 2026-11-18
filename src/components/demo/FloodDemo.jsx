@@ -127,25 +127,31 @@ export default function FloodDemo() {
       </div>
 
       <div className="demo-stage">
-        <div className="demo-canvas">
-          <Scene
-            active={inView}
-            region={region}
-            houses={houses}
-            stations={placed}
-            broadcastFrom={broadcast?.p ?? 2}
-            agents={agents}
-            plans={plans}
-            onFloodedChange={setFlooded}
-          />
-        </div>
+        <div className="demo-view">
+          <div className="demo-canvas">
+            <Scene
+              active={inView}
+              region={region}
+              houses={houses}
+              stations={placed}
+              broadcastFrom={broadcast?.p ?? 2}
+              agents={agents}
+              plans={plans}
+              onFloodedChange={setFlooded}
+            />
+          </div>
 
-        <div className="hud hud-top glass">
-          <span className="clock">{clock}</span>
-          <span className="rain">🌧 {Math.round(rainAt(progress, region) * 118)} mm/h</span>
-          <span className="chip" style={{ '--c': STATUS_COLOR[status] }}>
-            {status}
-          </span>
+          <div className="hud hud-top glass">
+            <span className="clock">{clock}</span>
+            <span className="rain">🌧 {Math.round(rainAt(progress, region) * 118)} mm/h</span>
+            <span className="chip" style={{ '--c': STATUS_COLOR[status] }}>
+              {status}
+            </span>
+          </div>
+
+          <PhoneAlert station={warningOn ? phoneStation : null} status={status} clock={clock} />
+  
+          <SimControls className="hud hud-bottom glass" />
         </div>
 
         <div className="hud hud-left glass">
@@ -212,10 +218,6 @@ export default function FloodDemo() {
               ))}
           </ol>
         </div>
-
-        <PhoneAlert station={warningOn ? phoneStation : null} status={status} clock={clock} />
-
-        <SimControls className="hud hud-bottom glass" />
       </div>
     </section>
   )

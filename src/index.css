@@ -48,6 +48,7 @@ button { font: inherit; cursor: pointer; }
 /* ---------- Hero ---------- */
 .hero { height: 100vh; min-height: 640px; position: relative; overflow: hidden; }
 .hero-bg { position: absolute; inset: 0; }
+.hero::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(100deg, rgba(4, 22, 36, 0.38), rgba(4, 22, 36, 0.05) 70%); }
 .hero::after { content: ''; position: absolute; inset: auto 0 0 0; height: 35%; background: linear-gradient(transparent, var(--bg)); pointer-events: none; }
 .hero-inner {
   position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: center;
@@ -57,7 +58,7 @@ button { font: inherit; cursor: pointer; }
 .hero-title { font-size: clamp(2.8rem, 8vw, 6.6rem); line-height: 0.98; margin: 1.2rem 0; color: #fff; filter: drop-shadow(0 6px 30px rgba(0, 20, 40, 0.35)); }
 .mask { display: inline-block; overflow: hidden; vertical-align: top; margin-right: 0.22em; padding-bottom: 0.08em; }
 .word { display: inline-block; }
-.hero-sub { color: rgba(255, 255, 255, 0.92); font-size: clamp(1rem, 1.5vw, 1.2rem); max-width: 620px; }
+.hero-sub { text-shadow: 0 1px 14px rgba(0, 25, 45, 0.6); color: rgba(255, 255, 255, 0.95); font-size: clamp(1rem, 1.5vw, 1.2rem); max-width: 620px; }
 .hero-cta { align-items: center; display: flex; gap: 0.8rem; margin-top: 1.6rem; flex-wrap: wrap; }
 
 /* ---------- Problem ---------- */
@@ -94,6 +95,7 @@ button { font: inherit; cursor: pointer; }
   position: relative; height: min(92vh, 900px); min-height: 640px; margin: 0 clamp(0.5rem, 2vw, 2rem);
   border-radius: 28px; overflow: hidden; border: 1px solid var(--glass-border);
 }
+.demo-view { position: absolute; inset: 0; }
 .demo-canvas { position: absolute; inset: 0; }
 .connecting { display: grid; place-items: center; height: 100%; color: var(--muted); }
 .hud { position: absolute; border-radius: 18px; padding: 1rem; z-index: 30; }
@@ -172,7 +174,8 @@ button { font: inherit; cursor: pointer; }
 .cb-foot { font-size: 0.6rem; color: var(--muted); margin-top: 0.6rem; }
 
 /* ---------- Region picker / shared ---------- */
-.region-pick { display: inline-flex; align-items: center; gap: 0.7rem; margin-top: 0.4rem; }
+.region-pick { display: inline-flex; align-items: center; gap: 0.7rem; margin-top: 0.4rem; max-width: 100%; }
+.region-pick select { max-width: 100%; min-width: 0; }
 .region-pick span { font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 .region-pick select {
   font: 600 0.95rem var(--body); color: var(--ink); background: rgba(255, 255, 255, 0.06);
@@ -270,7 +273,8 @@ button { font: inherit; cursor: pointer; }
 .loc-where span { color: var(--muted); font-size: 0.85rem; }
 .loc-station { padding: 1rem; border-radius: 16px; background: rgba(255, 255, 255, 0.04); border-left: 4px solid var(--c); display: flex; flex-direction: column; gap: 0.35rem; }
 .loc-station b { font: 600 1.05rem var(--display); }
-.loc-level { display: flex; gap: 0.8rem; align-items: center; font-variant-numeric: tabular-nums; }
+.loc-level { display: flex; flex-wrap: wrap; gap: 0.4rem 0.8rem; align-items: center; font-variant-numeric: tabular-nums; }
+.loc-level > * { white-space: nowrap; }
 .phone.phone-inline { position: relative; right: auto; bottom: auto; flex: 0 0 250px; }
 
 /* ---------- Toast ---------- */
@@ -305,12 +309,9 @@ button { font: inherit; cursor: pointer; }
 @media (max-width: 1100px) {
   .loc-grid { grid-template-columns: 1fr; }
   .phone { right: 1rem; bottom: 5.5rem; width: 220px; }
-  .hud-right { display: none; }
 }
 @media (max-width: 860px) {
   .facts, .steps { grid-template-columns: 1fr 1fr; }
-  .hud-left { width: 200px; }
-  .hud-left .station:nth-child(n + 4) { display: none; }
   .hud-top .rain { display: none; }
 }
 @media (max-width: 860px) {
@@ -322,7 +323,6 @@ button { font: inherit; cursor: pointer; }
   .map-stage { height: 62vh; min-height: 440px; }
   .phone.phone-inline { flex-basis: 220px; margin: 0 auto; }
   .facts, .steps { grid-template-columns: 1fr; }
-  .hud-left { display: none; }
   .demo-stage .phone { left: 50%; right: auto; width: 200px; margin-left: -100px; bottom: 4.8rem; padding-top: 1.9rem; }
   .demo-stage .cb p, .demo-stage .cb-langs { display: none; }
   .cb-title { font-size: 1.05rem; }
@@ -330,4 +330,33 @@ button { font: inherit; cursor: pointer; }
   .hud-bottom .btn-primary, .hud-bottom .btn-ghost { padding: 0.65rem 1rem; font-size: 0.85rem; white-space: nowrap; }
   .sim-controls input { margin: 0 0.4rem; }
   .demo-stage { height: 80vh; min-height: 560px; }
+}
+
+/* ---------- Phones & tablets: valley panels move below the 3D view ---------- */
+@media (max-width: 1100px) {
+  .demo-stage {
+    height: auto; min-height: 0; overflow: visible; border: 0; border-radius: 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start;
+  }
+  .demo-view { position: relative; grid-column: 1 / -1; height: 72vh; min-height: 500px; border-radius: 24px; overflow: hidden; border: 1px solid var(--glass-border); }
+  .hud-left, .hud-right { position: static; width: auto; max-height: none; }
+  .hud-right { order: 1; }
+  .hud-left { order: 2; }
+  .hud-right .log { max-height: 260px; }
+}
+@media (max-width: 860px) {
+  .problem-bg::after { background: linear-gradient(180deg, rgba(7, 16, 25, 0.82), rgba(7, 16, 25, 0.7) 50%, rgba(7, 16, 25, 0.88)); }
+}
+@media (max-width: 640px) {
+  .demo-stage { grid-template-columns: 1fr; }
+  .demo-view { height: 68vh; min-height: 440px; }
+}
+@media (max-width: 560px) {
+  /* controls wrap: buttons on top, full-width slider underneath */
+  .sim-controls { flex-wrap: wrap; border-radius: 22px; justify-content: center; }
+  .sim-controls input { order: 3; flex-basis: 100%; margin: 0.35rem 0.6rem 0.25rem; }
+  .demo-stage .phone { bottom: 7.4rem; }
+  .pc-row input { font-size: 1.25rem; letter-spacing: 0.06em; padding: 0.55rem 0.8rem; }
+  .pc-row .btn-primary { padding: 0.8rem 1.1rem; }
+  .hero-inner { padding-bottom: 3rem; }
 }
